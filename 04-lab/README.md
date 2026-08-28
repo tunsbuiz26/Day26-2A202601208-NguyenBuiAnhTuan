@@ -87,3 +87,13 @@ Open http://localhost:8000 in your browser, select `weather_agent`, and ask abou
 | `WEATHERAPI_KEY` | mcp-server | API key from weatherapi.com |
 | `GOOGLE_API_KEY` | mcp-client/.env | Gemini API key |
 | `PORT` | mcp-server (env) | Override server port (default: 8085) |
+
+---
+
+## Bài 1 — MCP Server cho công việc thực tế (phần dễ)
+
+Phần nộp bài độc lập nằm trong [`easy-mcp-server/`](easy-mcp-server/). Server
+`repo-helper` cung cấp hai tool đọc dữ liệu thật trong repository: `find_files`
+để tìm file và `search_in_files` để tìm nội dung trong file. README của phần này
+có mô tả input/output, cách chạy, đăng ký với Claude Code và smoke test qua MCP.
+Phần Bài 2 bổ sung Streamable HTTP, Bearer TokenVerifier và kiểm thử 401/403.

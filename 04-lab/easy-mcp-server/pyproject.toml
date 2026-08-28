@@ -1,0 +1,9 @@
+[project]
+name = "repo-helper-mcp-server"
+version = "0.1.0"
+description = "MCP tools for finding files and searching a local repository"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=2.0.0",
+    "httpx>=0.28.1",
+]

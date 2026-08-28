@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 venv/
 .env
+.mcp.json
+.claude/
 **/.venv
 .adk/
 *.db
