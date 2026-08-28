@@ -5,6 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import secrets
 import sys
 from pathlib import Path
 
@@ -18,8 +19,8 @@ REPO_ROOT = SERVER_DIR.parents[1]
 SERVER_FILE = SERVER_DIR / "repo_server.py"
 PORT = 8765
 SERVER_URL = f"http://127.0.0.1:{PORT}/mcp"
-VALID_TOKEN = "test-valid-token"
-LIMITED_TOKEN = "test-limited-token"
+VALID_TOKEN = f"test-valid-{secrets.token_urlsafe(32)}"
+LIMITED_TOKEN = f"test-limited-{secrets.token_urlsafe(32)}"
 
 INITIALIZE_REQUEST = {
     "jsonrpc": "2.0",

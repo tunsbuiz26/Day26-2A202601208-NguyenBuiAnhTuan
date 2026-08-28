@@ -60,12 +60,12 @@ class StaticTokenVerifier(TokenVerifier):
         return AccessToken(token=token, client_id=client_id, scopes=scopes)
 
 
-AUTH_TOKEN = os.getenv("MCP_AUTH_TOKEN", "repo-dev-token")
-LIMITED_TOKEN = os.getenv("MCP_LIMITED_TOKEN", "repo-limited-token")
-VALID_TOKENS: dict[str, tuple[str, list[str]]] = {
-    AUTH_TOKEN: ("repo-client", ["repo:read"]),
-}
-if LIMITED_TOKEN != AUTH_TOKEN:
+AUTH_TOKEN = os.getenv("MCP_AUTH_TOKEN")
+LIMITED_TOKEN = os.getenv("MCP_LIMITED_TOKEN")
+VALID_TOKENS: dict[str, tuple[str, list[str]]] = {}
+if AUTH_TOKEN:
+    VALID_TOKENS[AUTH_TOKEN] = ("repo-client", ["repo:read"])
+if LIMITED_TOKEN and LIMITED_TOKEN != AUTH_TOKEN:
     VALID_TOKENS[LIMITED_TOKEN] = ("limited-client", [])
 
 mcp = MCPServer(

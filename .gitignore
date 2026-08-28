@@ -3,6 +3,13 @@ __pycache__/
 *.pyc
 venv/
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+credentials*.json
+secrets*.json
 .mcp.json
 .claude/
 **/.venv

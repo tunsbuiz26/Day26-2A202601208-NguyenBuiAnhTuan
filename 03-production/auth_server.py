@@ -24,10 +24,12 @@ from mcp.server.auth.settings import AuthSettings
 from mcp.server.mcpserver import MCPServer
 
 # --- Token store (production: dùng DB, Redis, hoặc JWT verification) ---
-VALID_TOKENS: dict[str, str] = {
-    os.environ.get("MCP_AUTH_TOKEN", "dev-token-abc123"): "dev-user",
-    "prod-key-xyz789": "prod-service",
-}
+# Không hard-code credential trong source; token phải được cấp qua môi trường.
+VALID_TOKENS: dict[str, str] = {}
+if token := os.environ.get("MCP_AUTH_TOKEN"):
+    VALID_TOKENS[token] = "dev-user"
+if token := os.environ.get("MCP_PROD_TOKEN"):
+    VALID_TOKENS[token] = "prod-service"
 
 
 class StaticTokenVerifier(TokenVerifier):

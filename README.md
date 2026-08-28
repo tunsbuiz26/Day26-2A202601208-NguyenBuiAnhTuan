@@ -61,14 +61,14 @@ cd 03-production && python registry_client.py
 
 ## So sánh trực tiếp
 
-| Tiêu chí | Function Calling | Model Context Protocol (MCP) |
-|---|---|---|
-| **Bản chất** | Tính năng của mô hình (Model capability) | Giao thức giao tiếp client–server |
-| **Ai định nghĩa tool?** | Bạn hard-code trong từng app | Server tự công bố (self-describe) tool |
-| **Tái sử dụng** | Phải viết lại cho mỗi app/model | Viết 1 lần, mọi MCP client dùng được |
-| **Thực thi** | App của bạn tự chạy | MCP Server chạy, client điều phối |
-| **Tính chuẩn hóa** | Mỗi nhà cung cấp 1 kiểu (OpenAI, Anthropic khác nhau) | Một chuẩn chung do Anthropic đề xuất |
-| **Hệ sinh thái** | Khó chia sẻ dạng module đóng gói sẵn | Dễ dàng chia sẻ và tải về các "MCP Servers" mã nguồn mở |
+| Tiêu chí                       | Function Calling                                           | Model Context Protocol (MCP)                                      |
+| -------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Bản chất**             | Tính năng của mô hình (Model capability)              | Giao thức giao tiếp client–server                              |
+| **Ai định nghĩa tool?** | Bạn hard-code trong từng app                             | Server tự công bố (self-describe) tool                         |
+| **Tái sử dụng**         | Phải viết lại cho mỗi app/model                        | Viết 1 lần, mọi MCP client dùng được                       |
+| **Thực thi**              | App của bạn tự chạy                                    | MCP Server chạy, client điều phối                             |
+| **Tính chuẩn hóa**      | Mỗi nhà cung cấp 1 kiểu (OpenAI, Anthropic khác nhau) | Một chuẩn chung do Anthropic đề xuất                         |
+| **Hệ sinh thái**         | Khó chia sẻ dạng module đóng gói sẵn                | Dễ dàng chia sẻ và tải về các "MCP Servers" mã nguồn mở |
 
 ## Quan hệ giữa chúng
 
@@ -133,13 +133,13 @@ Chi tiết + code: xem [`02-mcp-basics/README.md`](02-mcp-basics/README.md)
 
 ### Điểm khác biệt rút ra từ code
 
-| | Function Calling thuần | MCP |
-|---|---|---|
-| Khai báo schema | Tự viết tay trong app | `@mcp.tool()` tự sinh từ type hints |
-| Nơi thực thi tool | Trong app gọi model | Trong MCP server riêng |
-| Khám phá tool | Hard-code danh sách `tools` | `session.list_tools()` tại runtime |
-| Dùng lại ở app khác | Copy code | Cắm thêm client, không sửa server |
-| Vai trò Function Calling | Là toàn bộ cơ chế | Là lớp model bên trong MCP |
+|                           | Function Calling thuần       | MCP                                     |
+| ------------------------- | ----------------------------- | --------------------------------------- |
+| Khai báo schema          | Tự viết tay trong app       | `@mcp.tool()` tự sinh từ type hints |
+| Nơi thực thi tool       | Trong app gọi model          | Trong MCP server riêng                 |
+| Khám phá tool           | Hard-code danh sách`tools` | `session.list_tools()` tại runtime   |
+| Dùng lại ở app khác   | Copy code                     | Cắm thêm client, không sửa server   |
+| Vai trò Function Calling | Là toàn bộ cơ chế        | Là lớp model bên trong MCP           |
 
 ---
 
@@ -169,11 +169,11 @@ MCP server phục vụ qua **HTTP** cho nhiều client → cần xác thực. MC
 - Client: gửi header `Authorization: Bearer <token>` qua `httpx.AsyncClient`
 - Không có token → 401, token sai → 403, logic tool không biết gì về auth
 
-| Tầng | Demo (stdio) | Production (HTTP) |
-|---|---|---|
-| Transport | stdio (cùng máy) | Streamable HTTP (qua mạng) |
-| Auth | Không cần | Bearer token / OAuth / mTLS |
-| Phạm vi truy cập | Toàn bộ | Scopes giới hạn từng client |
+| Tầng              | Demo (stdio)       | Production (HTTP)              |
+| ------------------ | ------------------ | ------------------------------ |
+| Transport          | stdio (cùng máy) | Streamable HTTP (qua mạng)    |
+| Auth               | Không cần        | Bearer token / OAuth / mTLS    |
+| Phạm vi truy cập | Toàn bộ          | Scopes giới hạn từng client |
 
 ### 2. Tool Registry & Discovery
 
@@ -197,35 +197,35 @@ Kết nối tới server weather-v2, gọi get_weather_v2(city="Hanoi")
 
 Registry là **tool-centric** — đơn vị khám phá là **tool** (tag, description, parameters), không phải server.
 
-| | Hard-code (demo) | Tool Registry (production) |
-|---|---|---|
-| Agent biết tool nào? | Chỉ tool được code sẵn | Tất cả tool trong registry |
-| Tìm tool | Theo tên cố định | Theo tag, keyword, capability |
-| Thêm tool mới | Sửa code agent | Thêm entry vào registry |
-| Chọn tool | Developer quyết định | Agent tự chọn best match |
+|                        | Hard-code (demo)            | Tool Registry (production)    |
+| ---------------------- | --------------------------- | ----------------------------- |
+| Agent biết tool nào? | Chỉ tool được code sẵn | Tất cả tool trong registry  |
+| Tìm tool              | Theo tên cố định        | Theo tag, keyword, capability |
+| Thêm tool mới        | Sửa code agent             | Thêm entry vào registry     |
+| Chọn tool             | Developer quyết định     | Agent tự chọn best match    |
 
 ### 3. Versioning & Backward Compatibility
 
 Server v1 có `get_weather(city)` trả chuỗi đơn giản. V2 muốn trả JSON chi tiết, thêm `include_forecast`. Nếu đổi trực tiếp → mọi client cũ break. Giải pháp — 3 kỹ thuật kết hợp:
 
-| Kỹ thuật | Mô tả |
-|---|---|
+| Kỹ thuật                    | Mô tả                                                                         |
+| ----------------------------- | ------------------------------------------------------------------------------- |
 | **Tool mới song song** | `get_weather_v2` tồn tại bên cạnh `get_weather` — không xoá tool cũ |
-| **Tham số optional** | `include_forecast`, `units` có default → client cũ gọi vẫn đúng |
-| **Server metadata** | Resource `server://info` công bố version + deprecation notice |
+| **Tham số optional**   | `include_forecast`, `units` có default → client cũ gọi vẫn đúng      |
+| **Server metadata**     | Resource`server://info` công bố version + deprecation notice                |
 
 Chi tiết + code cho cả 3 phần: xem [`03-production/README.md`](03-production/README.md)
 
 ### Tổng kết Production Checklist
 
-| Khía cạnh | Dev/Demo | Production |
-|---|---|---|
-| **Transport** | stdio (cùng máy) | HTTP/SSE (qua mạng) |
-| **Auth** | Không | Bearer token, OAuth, mTLS |
-| **Discovery** | Hard-code tool/server | Tool Registry — agent tìm tool theo task |
-| **Versioning** | 1 tool duy nhất | Tool v1 + v2 song song, deprecation notice |
-| **Health** | Không | Health check, retry, circuit breaker |
-| **Logging** | `print()` | Structured logging, tracing (OpenTelemetry) |
+| Khía cạnh          | Dev/Demo              | Production                                  |
+| -------------------- | --------------------- | ------------------------------------------- |
+| **Transport**  | stdio (cùng máy)    | HTTP/SSE (qua mạng)                        |
+| **Auth**       | Không                | Bearer token, OAuth, mTLS                   |
+| **Discovery**  | Hard-code tool/server | Tool Registry — agent tìm tool theo task  |
+| **Versioning** | 1 tool duy nhất      | Tool v1 + v2 song song, deprecation notice  |
+| **Health**     | Không                | Health check, retry, circuit breaker        |
+| **Logging**    | `print()`           | Structured logging, tracing (OpenTelemetry) |
 
 ---
 

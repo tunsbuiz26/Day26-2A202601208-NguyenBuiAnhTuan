@@ -5,6 +5,7 @@ token vào mọi request HTTP (POST, GET, DELETE) tới server.
 
 Cách chạy (cần auth_server.py đang chạy ở terminal khác):
     cd 03-production
+    # Set MCP_AUTH_TOKEN in both terminals; do not hard-code it in source.
     python auth_server.py            # terminal 1
     python auth_client.py            # terminal 2
 """
@@ -12,6 +13,7 @@ Cách chạy (cần auth_server.py đang chạy ở terminal khác):
 from __future__ import annotations
 
 import asyncio
+import os
 
 import httpx
 
@@ -19,7 +21,7 @@ from mcp import ClientSession
 from mcp.client.streamable_http import streamable_http_client
 
 SERVER_URL = "http://localhost:8000/mcp"
-TOKEN = "dev-token-abc123"
+TOKEN = os.environ["MCP_AUTH_TOKEN"]
 
 
 async def main() -> None:

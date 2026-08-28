@@ -57,6 +57,16 @@ Yêu cầu Python 3.10+ và `uv` (hoặc `pip`). Từ thư mục này:
 uv sync
 ```
 
+Nếu PowerShell báo không tìm thấy `uv`, có thể dùng `venv` và `pip` thay thế:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install "mcp>=2.0.0" "httpx>=0.28.1"
+```
+
+Sau đó thay `uv run python ...` bằng
+`.\.venv\Scripts\python.exe ...` trong các lệnh bên dưới.
+
 Chọn repository mà server được phép đọc bằng `WORKSPACE_ROOT`:
 
 ```bash
@@ -145,8 +155,8 @@ uv run python repo_server.py
 
 `MCP_AUTH_TOKEN` là token hợp lệ với scope `repo:read`. Token trong
 `MCP_LIMITED_TOKEN` được nhận diện nhưng không có scope, dùng để kiểm tra
-trường hợp bị từ chối do thiếu quyền. Nếu không cấu hình, server dùng token
-demo `repo-dev-token` và `repo-limited-token`.
+trường hợp bị từ chối do thiếu quyền. Server không chứa token mặc định; nếu
+không cấu hình biến môi trường thì không có token nào được chấp nhận.
 
 ### Kiểm tra các trường hợp auth
 

@@ -27,10 +27,13 @@ Server chạy qua **Streamable HTTP** thay vì stdio, kèm bearer token verifica
 
 ```bash
 # Terminal 1 — khởi động server
+export MCP_AUTH_TOKEN="your-development-token"
+export MCP_PROD_TOKEN="your-production-token"
 python auth_server.py
 # Server lắng nghe tại http://localhost:8000/mcp
 
 # Terminal 2 — client kết nối kèm token
+export MCP_AUTH_TOKEN="your-development-token"
 python auth_client.py
 ```
 

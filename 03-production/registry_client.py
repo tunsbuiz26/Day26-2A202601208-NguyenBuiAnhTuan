@@ -101,7 +101,11 @@ async def connect_and_call(match: dict, tool_args: dict) -> str:
         headers = {}
         auth_cfg = server.get("auth")
         if auth_cfg and auth_cfg["type"] == "bearer":
-            token = os.environ.get(auth_cfg["token_env"], "dev-token-abc123")
+            token = os.environ.get(auth_cfg["token_env"])
+            if not token:
+                raise RuntimeError(
+                    f"Missing required environment variable: {auth_cfg['token_env']}"
+                )
             headers["Authorization"] = f"Bearer {token}"
 
         async with httpx.AsyncClient(headers=headers) as http_client:
